@@ -7,22 +7,23 @@ var secretKey = config.secretKey;
 var jsonwebtoken = require('jsonwebtoken'); //used to create tokens for users authentication and incryption
 
 //userId and password creator
-function createToken(user){
+	function createToken(user){
 
-	var token = jsonwebtoken.sign({
-		id : user._id,
-		name: user.name,
-		username: user.username
-	},secretKey,{
-		expirtesInMinutes : 1440
-	});
+		var token = jsonwebtoken.sign({
+			id : user._id,
+			name: user.name,
+			username: user.username
+		},secretKey,{
+			expirtesInMinutes : 1440
+		});
 
-	return token;
-}
+		return token;
+	}
 
 
 
-module.exports = function(app,express,io){
+module.exports = function(app,express,io)
+{
 
 	var api = express.Router();
 
@@ -112,71 +113,73 @@ module.exports = function(app,express,io){
 
 
 //it is a middleware everything above it is a data before the user enter the app 
-api.use(function(req, res, next){
+	api.use(function(req, res, next){
 
-	console.log("a user wants to authenticate in ur app");
+		console.log("a user wants to authenticate in ur app");
 
-	var token = req.body.token /*|| req.param('token')*/ || req.headers['x-access-token'];
+		var token = req.body.token /*|| req.param('token')*/ || req.headers['x-access-token'];
 
-	//check if token exit ,if exist then authenticate else give message
+		//check if token exit ,if exist then authenticate else give message
 
-	if(token){
+		if(token){
 
-		jsonwebtoken.verify(token,secretKey,function(err, decoded){
+			jsonwebtoken.verify(token,secretKey,function(err, decoded){
 
-			if(err){
-				res.status(403).send({success: false, message:"failed to authenticate"});
-			}else{
-				req.decoded = decoded;
-				next();
-			}
-		});
-	} else {
-		res.status(403).send({ success: false , message: " no token provided" });
-	}
-});
-
-
-
-// destination b or where the app starts, here after login user is directed to home route 
-api.route('/')
-
-	.post(function(req,res) {
-
-			var story = new Story({
-			   	creator: req.decoded.id,
-				content: req.body.content,
-			});
-
-			story.save(function(err, newStory){
 				if(err){
-					res.send(err);
-					return;
+					res.status(403).send({success: false, message:"failed to authenticate"});
+				}else{
+					req.decoded = decoded;
+					next();
 				}
-				io.emit('story', newStory)
-				res.json({message:"new story created" });
 			});
-		})
-
-	.get(function(req,res){
-
-		Story.find({ creator: req.decoded.id}, function(err,stories){
-			if(err){
-				res.send(err);
-				return;
-			}
-
-			res.json(stories);
-		});
+		} else {
+			res.status(403).send({ success: false , message: " no token provided" });
+		}
 	});
 
 
 
-// decoded api.use method cant be called so new route is made to call and get middleware to frontend
-api.get('/me',function(req,res){
-	res.send(req.decoded);
-});
+// destination b or where the app starts, here after login user is directed to home route 
+	api.route('/')
 
-	return api;
+		.post(function(req,res) {
+
+				var story = new Story({
+				   	creator: req.decoded.id,
+					content: req.body.content,
+				});
+
+				
+
+				story.save(function(err, newStory){
+					if(err){
+						res.send(err);
+						return;
+					}
+					io.emit('story', newStory)
+					res.json({message:"new story created" });
+				});
+			})
+
+		.get(function(req,res){
+
+			Story.find({ creator: req.decoded.id}, function(err,stories){
+				if(err){
+					res.send(err);
+					return;
+				}
+
+				res.json(stories);
+			});
+		});
+
+
+
+// decoded api.use method cant be called so new route is made to call and get middleware to frontend
+	api.get('/me',function(req,res){
+		res.send(req.decoded);
+	});
+
+return api;
 
 } 

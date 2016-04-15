@@ -3,12 +3,18 @@
 <head>
 <base href="/"></base>
 	<title>User story</title>
+	
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Great+Vibes' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" type="text/css" href="app/views/main.css">
+
 
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-	
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.5/angular-route.min.js"></script>
 	<script type="text/javascript" src="/socket.io/socket.io.js"></script>	
+	
 	
 	<!--........SERVICES...........-->
 	<script type="text/javascript" src="app/services/authservices.js"></script>
@@ -31,35 +37,35 @@
 
 </head>
 
-<body ng-controller="mainController as main">
+<body ng-controller="mainController as main" >
 <header>
-	<div class="navbar navbar-default">
-		<div class="navbar-header">
-			<a href="/" class="navbar-brand" > <span class="glyphicon glyphicon-book"></span> User Story</a>
-		</div>
+<div class="navigation">
+	<div class="navbar">
+			<div class="navbar-header">
+				<a href="/" class="navbar-brand" > <span class="glyphicon glyphicon-book"></span> User Story</a>
+			</div>
 
-		<ul class="nav navbar-nav">
-			<li><a href="/users"></a></li>
-		</ul>
-
-		<ul class="nav navbar-nav navbar-right">
-			<li ng-if="!main.loggedIn"><a href="/login">login</a></li>
-			<li ng-if="!main.loggedIn"><a href="/signup">signup</a></li>
-			<li ng-if="main.loggedIn"><a href="#">Hello {{main.user.username}}</a></li>
-			<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
 			
-		</ul>
+
+			<ul class="nav navbar-nav navbar-right">
+				<li ng-if="!main.loggedIn"><a href="/login">login</a></li>
+				<li ng-if="!main.loggedIn"><a href="/signup">signup</a></li>
+				<li ng-if="main.loggedIn"><a href="#">Hello {{main.user.username}}</a></li>
+				<li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Logout</a></li>
+				
+			</ul>
 	</div>
+</div>
 </header>
 
 
 
 
-		<main class="container">
+		<div class="container main">
 		 	
-		 	<div ng-view></div>
+		 	<div   ng-view></div>
 			
-		</main>
+		</div>
 
 </body>
 	

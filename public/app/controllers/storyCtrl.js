@@ -10,7 +10,7 @@ angular.module('storyCtrl',['storyService'])
 				});
 
 		vm.createStory = function(){
-				vm.peocessing = true;
+				vm.processing = true;
 
 				vm.message = '';
 			Story.createStory(vm.storyData)
