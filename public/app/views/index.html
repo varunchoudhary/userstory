@@ -48,6 +48,8 @@
 			
 
 			<ul class="nav navbar-nav navbar-right">
+				<li ><a href="/all-stories">stories</a></li>
+				<li ng-if="main.loggedIn"><a href="/home"> write story</a></li>
 				<li ng-if="!main.loggedIn"><a href="/login">login</a></li>
 				<li ng-if="!main.loggedIn"><a href="/signup">signup</a></li>
 				<li ng-if="main.loggedIn"><a href="#">Hello {{main.user.username}}</a></li>
